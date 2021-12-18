@@ -1,0 +1,36 @@
+version: '3.8'
+services:
+  node:
+    build: 
+      context: .
+      dockerfile: ./dockerfiles/node.dockerfile
+    volumes:
+      - ./src:/app
+    tty: true
+    stdin_open: true
+    depends_on:
+      - db
+
+  dev-server:
+    build: 
+      context: ./src
+      dockerfile: dev.dockerfile
+    volumes:
+      - /app/node_modules
+      - ./src:/app/
+    tty: true
+    stdin_open: true
+    depends_on:
+      - db
+  
+  db:
+    image: mysql:latest
+    env_file:
+      - ./env/mysql.env
+    volumes:
+      - db:/var/lib/mysql
+    #for access during dev
+    ports:
+      - "3307:3306"
+volumes:
+  db:
