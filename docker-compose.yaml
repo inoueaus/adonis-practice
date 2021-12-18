@@ -24,13 +24,13 @@ services:
       - db
   
   db:
-    image: mysql:latest
+    image: postgres:14.1-alpine
     env_file:
-      - ./env/mysql.env
+      - ./env/postgres.env
     volumes:
-      - db:/var/lib/mysql
+      - db:/var/lib/postgresql/data
     #for access during dev
     ports:
-      - "3307:3306"
+      - "5432:5432"
 volumes:
   db:
