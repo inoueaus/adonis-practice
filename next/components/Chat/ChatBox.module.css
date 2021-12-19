@@ -1,0 +1,21 @@
+.chatbox {
+    list-style-type: none;
+    padding: 0;
+}
+
+.chatbox li {
+    display: flex;
+    flex-direction: row;
+    padding: 1rem;
+    border: 1px solid grey;
+    margin-bottom: 1rem;
+}
+
+.chatbox p {
+    padding: 0;
+    margin: 0;
+}
+
+.chatbox h5 {
+    margin: 0 1rem 0 0;
+}

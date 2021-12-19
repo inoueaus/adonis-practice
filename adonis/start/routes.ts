@@ -22,42 +22,64 @@ import Route from "@ioc:Adonis/Core/Route";
 import Chatroom from "App/Models/Chatroom";
 import User from "App/Models/User";
 import UsersChatroom from "App/Models/UsersChatroom";
+import Hash from "@ioc:Adonis/Core/Hash";
 
 Route.get("/", async () => {
   return { hello: "world" };
 });
 
-Route.get("/new-user", async () => {
+Route.post("/auth/login", "AuthController.login");
+Route.post("/auth/register", "AuthController.register");
+Route.post("/auth/logout", "AuthController.logout");
+
+Route.get("/new-user", async ({ auth }) => {
   const user = new User();
   user.username = "user1";
-  user.password = "secret";
+
+  //make hashed password
+  const hashedPassword = await Hash.make("secret");
+  user.password = hashedPassword;
   user.firstName = "Austin";
   user.lastName = "Mayer";
-  const result = user.save();
-  return { res: 200, result };
+  const savedUser = await user.save();
+
+  return { res: 200, savedUser };
 });
 
 Route.get("/new-chatroom", async () => {
   const chatroom = new Chatroom();
   chatroom.roomName = "Room 1";
   const savedChatroom = await chatroom.save();
-  
+
   const userschatroom = new UsersChatroom();
-  const user = await User.find(1);
+  const user = await User.find(4);
   if (user && savedChatroom) {
     userschatroom.userId = user.id;
     userschatroom.chatroomId = chatroom.id;
     await userschatroom.save();
+    return {
+      result: 200,
+      userschatroom,
+      user,
+      chatroom,
+    };
   }
   return {
-    userschatroom,
-    user,
-    chatroom,
+    result: 400,
   };
 });
 
-Route.get("/all-users", async () => {
-  const users = await User.query().preload("userChatroom").preload("messages");
+Route.get("/all-users", async ({ auth }) => {
+  const user = await User.query()
+    .preload("userChatroom")
+    .preload("messages")
+    .first();
 
-  return { users };
+  let results: any = null;
+
+  if (user) {
+    results = await auth.use("api").attempt(user.username, "secret");
+  }
+
+  return { user, results };
 });

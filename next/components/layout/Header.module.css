@@ -1,0 +1,26 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    background-color: rgb(235, 198, 106);
+    padding: 0 5% 0 5%;
+    margin-bottom: 1rem;
+    box-shadow: 0 0 5px 3px rgba(0, 0, 0, 0.24);
+}
+
+.header ul {
+    display: flex;
+    flex-direction: row-reverse;
+    list-style-type: none;
+    padding: 0;
+}
+
+.header li {
+    margin-left: 10%;
+    padding: 5% 10% 5% 10%;
+    background-color: rgb(207, 207, 207);
+    border: 1px solid rgb(207, 207, 207);
+    border-radius: 6px;
+}

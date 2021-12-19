@@ -1,28 +1,30 @@
 version: '3.8'
 services:
-  node:
-    build: 
-      context: .
-      dockerfile: ./dockerfiles/node.dockerfile
-    volumes:
-      - ./src:/app
-    tty: true
-    stdin_open: true
-    depends_on:
-      - db
-
   dev-server:
     build: 
-      context: ./src
+      context: ./adonis
       dockerfile: dev.dockerfile
     volumes:
       - /app/node_modules
-      - ./src:/app/
+      - ./adonis:/app/
     tty: true
     stdin_open: true
     depends_on:
       - db
   
+  next-dev:
+    build: 
+      context: ./next
+      dockerfile: dev.dockerfile
+    volumes:
+      - /app/node_modules
+      - ./next:/app/
+    tty: true
+    stdin_open: true
+    depends_on:
+      - dev-server
+      - db
+
   db:
     image: postgres:14.1-alpine
     env_file:
@@ -32,5 +34,25 @@ services:
     #for access during dev
     ports:
       - "5432:5432"
+  
+  adonis-node:
+    build: 
+      context: .
+      dockerfile: ./dockerfiles/node.dockerfile
+    volumes:
+      - ./adonis:/app
+    tty: true
+    stdin_open: true
+    depends_on:
+      - db
+  
+  next-node:
+    image: node:14.18.2-alpine
+    working_dir: /app
+    volumes:
+      - ./next:/app
+    tty: true
+    stdin_open: true
+  
 volumes:
   db:
