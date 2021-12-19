@@ -69,7 +69,12 @@ export default class AuthController {
     });
   }
 
-  public async logout(ctx: HttpContextContract) {}
+  public async logout(ctx: HttpContextContract) {
+    await ctx.auth.use("api").revoke();
+    console.log(ctx.request);
+
+    return ctx.response.json({ revoked: true });
+  }
 
   public async changePassword(ctx: HttpContextContract) {}
 }
