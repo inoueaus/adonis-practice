@@ -15,3 +15,7 @@
 .form-control label {
     margin-bottom: 0.25rem;
 }
+
+.form-control__invalid input {
+    border-color: rgb(255, 158, 158);
+}
