@@ -9,7 +9,7 @@ const Header: React.FC = () => {
 
   return (
     <header className={styles.header}>
-      <section>Next Chat</section>
+      <section>{context.isAuth ? context.username : "Welcome"}</section>
       <nav>
         <ul>
           <li>

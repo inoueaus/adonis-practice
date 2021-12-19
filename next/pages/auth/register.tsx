@@ -1,11 +1,18 @@
 import type { NextPage } from "next";
-import React, { useRef } from "react";
+import { useRouter } from "next/router";
+import React, { useContext } from "react";
 import Button from "../../components/UI/Button";
 import Card from "../../components/UI/Card";
 import Input from "../../components/UI/Input";
+import AuthContext from "../../context/AuthContext";
+import authFetch from "../../helpers/auth-fetch";
 import useInput from "../../hooks/use-input";
 
 const Register: NextPage = () => {
+  const { setIsAuth, setToken, setUsername, setUserId } =
+    useContext(AuthContext);
+  const router = useRouter();
+
   const usernameRef = useInput((value) => value);
   const passwordRef = useInput((value) => value);
   const passConfRef = useInput((value) => value);
@@ -20,8 +27,22 @@ const Register: NextPage = () => {
       const username = usernameRef.validateAndReturnString();
       const password = passwordRef.validateAndReturnString();
       const passConf = passConfRef.validateAndReturnString();
-      if (username && password && passConf) {
-        
+      if (username && password === passConf) {
+        //Execute async function here
+        (async () => {
+          const results = await authFetch(
+            "register",
+            username as string,
+            password as string
+          );
+          if (results) {
+            setIsAuth(true);
+            setUsername(results.username);
+            setToken(results.token);
+            setUserId(results.userId);
+          }
+        })();
+        router.replace("/");
       }
     }
   };

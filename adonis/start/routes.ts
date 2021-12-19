@@ -42,8 +42,9 @@ Route.get("/new-user", async ({ auth }) => {
   user.firstName = "Austin";
   user.lastName = "Mayer";
   const savedUser = await user.save();
+  const loginResults = await auth.attempt(user.username, "secret");
 
-  return { res: 200, savedUser };
+  return { res: 200, savedUser, token: loginResults.token };
 });
 
 Route.get("/new-chatroom", async () => {
