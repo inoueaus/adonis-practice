@@ -21,9 +21,6 @@ services:
       - ./next:/app/
     tty: true
     stdin_open: true
-    depends_on:
-      - dev-server
-      - db
 
   db:
     image: postgres:14.1-alpine

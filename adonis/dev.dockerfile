@@ -7,6 +7,8 @@ COPY package.json /app/
 RUN npm install
 RUN npm install ace
 
+RUN ace run:migration
+
 COPY . /app/
 
 EXPOSE 3333
