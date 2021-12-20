@@ -5,7 +5,7 @@ WORKDIR /app
 COPY package.json /app/
 
 RUN npm install
-RUN npm install ace
+RUN npm install -g ace
 
 RUN ace run:migration
 
