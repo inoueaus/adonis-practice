@@ -11,18 +11,16 @@ COPY . /app/
 
 RUN npm run build
 
-FROM node:14.18.2-alpine AS prod
+FROM node:14.18.2-alpine AS runner
 
 WORKDIR /app
 
 COPY --from=build /app/build /app/
+COPY .env /app/
 
 RUN npm ci --production
 RUN npm install -g ace
-
-RUN ace run:migration
-
-COPY . /app/
+RUN npm install pino-pretty
 
 EXPOSE 3333
 

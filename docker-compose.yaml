@@ -20,6 +20,19 @@ services:
       - "80:3333"
     depends_on:
       - db
+    command: []
+
+  migration: 
+    build: 
+      context: .
+      dockerfile: ./dockerfiles/node.dockerfile
+    volumes:
+      - ./adonis:/app
+    tty: true
+    stdin_open: true
+    depends_on:
+      - db
+    command: ace migration:run
   
   next-dev:
     build: 
