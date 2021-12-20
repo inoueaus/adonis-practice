@@ -76,5 +76,5 @@ export default class AuthController {
     return ctx.response.json({ revoked: true });
   }
 
-  public async changePassword(ctx: HttpContextContract) {}
+  //public async changePassword(ctx: HttpContextContract) {}
 }

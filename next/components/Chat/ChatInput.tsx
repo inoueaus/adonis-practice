@@ -1,6 +1,6 @@
-import Button from "components/UI/Button";
-import Card from "components/UI/Card";
-import Input from "components/UI/Input";
+import Button from "../UI/Button";
+import Card from "../UI/Card";
+import Input from "../UI/Input";
 import React, { useRef } from "react";
 
 const ChatInput: React.FC<{ sendMessage: (content: string) => void }> = ({ sendMessage }) => {
@@ -19,7 +19,7 @@ const ChatInput: React.FC<{ sendMessage: (content: string) => void }> = ({ sendM
   return (
     <form onSubmit={submitHandler}>
     <Card>
-      <Input type="text" name="content" label="Send Message" ref={contentRef} />
+      
       <Button type="submit">Send</Button>
     </Card>
     </form>

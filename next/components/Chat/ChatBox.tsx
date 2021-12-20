@@ -1,5 +1,5 @@
-import Card from "components/UI/Card";
-import MessageModel from "models/message-model";
+import Card from "../UI/Card";
+import MessageModel from "../../models/message-model";
 import React from "react";
 
 import styles from "./ChatBox.module.css";

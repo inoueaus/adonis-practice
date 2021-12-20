@@ -1,10 +1,10 @@
-import MessageModel from "models/message-model";
+import MessageModel from "../../models/message-model";
 import React from "react";
 
 const MessageItem: React.FC<{ message: MessageModel }> = ({ message }) => {
   return (
     <li>
-      <h5>{message.username}</h5>
+      <h5>{message.sender}</h5>
       <p>{message.content}</p>
     </li>
   );

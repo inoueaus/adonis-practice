@@ -9,6 +9,7 @@ import Input from "../../components/UI/Input";
 import Button from "../../components/UI/Button";
 import ServerMessage from "../../models/server-message";
 import MessageModel from "../../models/message-model";
+import ChatBox from "../../components/Chat/ChatBox";
 
 const Chatroom: NextPage = () => {
   const context = useContext(AuthContext);
@@ -90,14 +91,7 @@ const Chatroom: NextPage = () => {
           <Button type="submit">Send</Button>
         </form>
       </Card>
-      <Card>
-        <h5>Messages</h5>
-        <ul>
-          {messages.map((message) => (
-            <li key={message.id}>{message.content}</li>
-          ))}
-        </ul>
-      </Card>
+      <ChatBox messages={messages} />
     </>
   );
 };
