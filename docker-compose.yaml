@@ -18,6 +18,8 @@ services:
       dockerfile: prod.dockerfile
     ports:
       - "80:3333"
+    volumes:
+      - /app/node_modules
     depends_on:
       - db
     command: []
