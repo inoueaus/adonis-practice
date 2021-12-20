@@ -17,12 +17,11 @@
 | import './routes/customer'
 |
 */
-
+import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Route from "@ioc:Adonis/Core/Route";
 import Chatroom from "App/Models/Chatroom";
 import User from "App/Models/User";
 import UsersChatroom from "App/Models/UsersChatroom";
-import Hash from "@ioc:Adonis/Core/Hash";
 
 Route.get("/", async () => {
   return { hello: "world" };
@@ -32,55 +31,36 @@ Route.post("/auth/login", "AuthController.login");
 Route.post("/auth/register", "AuthController.register");
 Route.post("/auth/logout", "AuthController.logout");
 
-Route.get("/new-user", async ({ auth }) => {
-  const user = new User();
-  user.username = "user1";
+//group requiring authentication middleware
+Route.group(() => {
+  Route.post("/join-chatroom", async (ctx: HttpContextContract) => {
+    //extract chatroomname from request
+    const body = await ctx.request.body();
+    const chatroomName = body.chatroomName as string;
+    const userId = body.userId as number;
 
-  //make hashed password
-  const hashedPassword = await Hash.make("secret");
-  user.password = hashedPassword;
-  user.firstName = "Austin";
-  user.lastName = "Mayer";
-  const savedUser = await user.save();
-  const loginResults = await auth.attempt(user.username, "secret");
+    //validate
+    const userExists = await User.find(userId);
+    if (userExists) {
+      //check if chatroom with name exists
+      const chatroomExists = await Chatroom.findBy("room_name", chatroomName);
 
-  return { res: 200, savedUser, token: loginResults.token };
-});
-
-Route.get("/new-chatroom", async () => {
-  const chatroom = new Chatroom();
-  chatroom.roomName = "Room 1";
-  const savedChatroom = await chatroom.save();
-
-  const userschatroom = new UsersChatroom();
-  const user = await User.find(4);
-  if (user && savedChatroom) {
-    userschatroom.userId = user.id;
-    userschatroom.chatroomId = chatroom.id;
-    await userschatroom.save();
-    return {
-      result: 200,
-      userschatroom,
-      user,
-      chatroom,
-    };
-  }
-  return {
-    result: 400,
-  };
-});
-
-Route.get("/all-users", async ({ auth }) => {
-  const user = await User.query()
-    .preload("userChatroom")
-    .preload("messages")
-    .first();
-
-  let results: any = null;
-
-  if (user) {
-    results = await auth.use("api").attempt(user.username, "secret");
-  }
-
-  return { user, results };
-});
+      if (chatroomExists) {
+        return ctx.response.json(chatroomExists);
+      }
+      //create chatroom if doesnt exist
+      const newChatroom = new Chatroom();
+      newChatroom.roomName = chatroomName;
+      const savedChatroom = await newChatroom.save();
+      if (savedChatroom) {
+        //create new link between chatroom and user
+        const newUsersChatroomsLink = new UsersChatroom();
+        newUsersChatroomsLink.userId = userExists.id;
+        newUsersChatroomsLink.chatroomId = savedChatroom.id;
+        await newUsersChatroomsLink.save();
+        return ctx.response.json(savedChatroom);
+      }
+    }
+    return ctx.response.unauthorized();
+  });
+}).middleware("auth:api");

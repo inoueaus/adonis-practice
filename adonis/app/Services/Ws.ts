@@ -16,7 +16,7 @@ class Ws {
       cors: {
         origin: "*",
         methods: ["GET", "POST"],
-        allowedHeaders: ["token"],
+        allowedHeaders: ["token", "userId", "chatroomId"],
         credentials: true,
       },
     });

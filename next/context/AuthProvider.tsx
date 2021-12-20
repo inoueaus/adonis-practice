@@ -26,7 +26,6 @@ const AuthProvider: React.FC = (props) => {
     const localStoreToken = window.localStorage.getItem("token");
     //must convert to number
     const localStoreUserIdString = window.localStorage.getItem("userId");
-    console.log(localStoreUserIdString, localStoreToken, localStoreUsername);
 
     if (localStoreToken && localStoreUsername && localStoreUserIdString) {
       setIsAuth(true);
@@ -61,6 +60,7 @@ const AuthProvider: React.FC = (props) => {
     username,
     userId,
     chatrooms,
+    setChatrooms,
     loginHandler,
     logoutHandler,
   };

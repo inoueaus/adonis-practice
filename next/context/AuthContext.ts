@@ -14,7 +14,8 @@ export type AuthContextModel = {
   username: string | null;
   userId: number | null;
   chatrooms: ChatroomModel[] | null;
-  loginHandler: LoginHandler
+  setChatrooms: (chatrooms: ChatroomModel[]) => void;
+  loginHandler: LoginHandler;
   logoutHandler: () => void;
 };
 
@@ -24,6 +25,7 @@ const AuthContext = createContext<AuthContextModel>({
   username: null,
   userId: null,
   chatrooms: null,
+  setChatrooms: () => {},
   loginHandler: () => {},
   logoutHandler: () => {},
 });
