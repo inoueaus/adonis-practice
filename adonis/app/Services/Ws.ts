@@ -13,9 +13,12 @@ class Ws {
 
     this.booted = true;
     this.io = new Server(AdonisServer.instance!, {
-      path: "/websocket",
-      cookie: false,
-      serveClient: false,
+      cors: {
+        origin: "*",
+        methods: ["GET", "POST"],
+        allowedHeaders: ["token"],
+        credentials: true,
+      },
     });
   }
 }

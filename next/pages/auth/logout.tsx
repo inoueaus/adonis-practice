@@ -10,14 +10,13 @@ const Logout: NextPage = () => {
   //logout on page load
   useEffect(() => {
     logoutFetch(context.token as string);
-    context.setChatrooms([]);
-    context.setIsAuth(false);
-    context.setToken(null);
-    context.setUserId(null);
-    context.setUsername(null);
-    
+    context.logoutHandler();
   }, []);
-  return <Card><h1>Logged out!</h1></Card>;
+  return (
+    <Card>
+      <h1>Logged out!</h1>
+    </Card>
+  );
 };
 
 export default Logout;

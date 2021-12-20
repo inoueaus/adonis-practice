@@ -28,10 +28,8 @@ const Login: NextPage = () => {
       (async () => {
         const authResults = await authFetch("login", username, password);
         if (authResults) {
-          context.setIsAuth(true);
-          context.setToken(authResults.token);
-          context.setUserId(authResults.userId);
-          context.setUsername(authResults.username);
+          //must add loading chatrooms
+          context.loginHandler(authResults.token, authResults.username, authResults.userId, []);
           router.replace("/");
         }
       })();

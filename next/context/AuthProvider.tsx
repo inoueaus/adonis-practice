@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ChatroomModel from "../models/chatroom-model";
-import AuthContext, { AuthContextModel } from "./AuthContext";
+import AuthContext, { AuthContextModel, LoginHandler } from "./AuthContext";
 
 const AuthProvider: React.FC = (props) => {
   const [isAuth, setIsAuth] = useState(false);
@@ -17,8 +17,6 @@ const AuthProvider: React.FC = (props) => {
       //must convert userId to a string to store (and convert back on loading to number)
       const userIdString = String(userId);
       window.localStorage.setItem("userId", userIdString);
-    } else {
-      window.localStorage.clear();
     }
   }, [token, username, userId]);
 
@@ -39,17 +37,32 @@ const AuthProvider: React.FC = (props) => {
     }
   }, []);
 
+  const loginHandler: LoginHandler = (token, username,  userId, chatrooms) => {
+    setIsAuth(true);
+    setChatrooms(chatrooms);
+    setUserId(userId);
+    setToken(token);
+    setUsername(username);
+  }
+
+  const logoutHandler = () => {
+    setIsAuth(false);
+    setChatrooms([]);
+    setUserId(null);
+    setToken(null);
+    setUsername(null);
+    //clear local storage
+    window.localStorage.clear();
+  }
+
   const providerValue: AuthContextModel = {
     isAuth,
     token,
     username,
     userId,
     chatrooms,
-    setIsAuth,
-    setToken,
-    setUsername,
-    setUserId,
-    setChatrooms,
+    loginHandler,
+    logoutHandler,
   };
   return (
     <AuthContext.Provider value={providerValue}>

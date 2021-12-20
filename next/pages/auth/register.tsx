@@ -9,8 +9,7 @@ import authFetch from "../../helpers/auth-fetch";
 import useInput from "../../hooks/use-input";
 
 const Register: NextPage = () => {
-  const { setIsAuth, setToken, setUsername, setUserId } =
-    useContext(AuthContext);
+  const { loginHandler } = useContext(AuthContext);
   const router = useRouter();
 
   const usernameRef = useInput((value) => value);
@@ -30,16 +29,18 @@ const Register: NextPage = () => {
       if (username && password === passConf) {
         //Execute async function here
         (async () => {
-          const results = await authFetch(
+          const authResults = await authFetch(
             "register",
             username as string,
             password as string
           );
-          if (results) {
-            setIsAuth(true);
-            setUsername(results.username);
-            setToken(results.token);
-            setUserId(results.userId);
+          if (authResults) {
+            loginHandler(
+              authResults.token,
+              authResults.username,
+              authResults.userId,
+              []
+            );
           }
         })();
         router.replace("/");
