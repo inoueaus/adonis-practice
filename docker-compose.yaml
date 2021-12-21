@@ -18,11 +18,8 @@ services:
       dockerfile: prod.dockerfile
     ports:
       - "80:3333"
-    volumes:
-      - /app/node_modules
     depends_on:
       - db
-    command: []
 
   migration: 
     build: 
@@ -30,6 +27,7 @@ services:
       dockerfile: ./dockerfiles/node.dockerfile
     volumes:
       - ./adonis:/app
+      - /app/node_modules
     tty: true
     stdin_open: true
     depends_on:
