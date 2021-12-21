@@ -20,10 +20,19 @@ COPY .env /app/
 
 RUN npm ci --production
 RUN npm install -g ace
-RUN npm install pino-pretty
 
-EXPOSE 3333
+EXPOSE 80
 
-ENV PORT=3333
+ENV PORT=80
+ENV HOST=0.0.0.0
+ENV NODE_ENV=production
+ENV APP_KEY=wKJB-3Q-CdYyC0x8bYP8hJIFMWMP6B__
+ENV DRIVE_DISK=local
+ENV DB_CONNECTION=pg
+ENV PG_HOST=localhost
+ENV PG_PORT=5432
+ENV PG_USER=lucid
+ENV PG_PASSWORD=secret
+ENV PG_DB_NAME=lucid
 
-CMD ["node", "server.js"]
+CMD ["npm", "run", "start"]

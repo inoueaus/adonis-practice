@@ -30,9 +30,13 @@ Ws.io.on("connection", async (socket: Socket) => {
         //load messages with user info
         const messagesQuery = await Message.query()
           .where("chatroom_id", chatroom.id)
+          .orderBy("created_at", "desc")
+          .limit(10)
           .preload("user");
         //remove passwords from messages
         messagesQuery.forEach((message) => (message.user.password = "secret"));
+        //reverse order for easy mapping in react
+        messagesQuery.reverse();
         //join chatroom with unique room id
         socket.join(chatroomIdString);
         //send to all users in same chatroom including user

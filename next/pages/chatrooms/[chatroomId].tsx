@@ -10,6 +10,7 @@ import Button from "../../components/UI/Button";
 import ServerMessage from "../../models/server-message";
 import MessageModel from "../../models/message-model";
 import ChatBox from "../../components/Chat/ChatBox";
+import { HOST_URL, HOST_PORT } from "../../react-env";
 
 const Chatroom: NextPage = () => {
   const context = useContext(AuthContext);
@@ -31,7 +32,7 @@ const Chatroom: NextPage = () => {
       chatroomId
     ) {
       //header values must be converted to a string
-      socket = io("http://localhost:3333/", {
+      socket = io(`http://${HOST_URL}:${HOST_PORT}/`, {
         extraHeaders: {
           token: context.token,
           userId: String(context.userId),
@@ -39,7 +40,6 @@ const Chatroom: NextPage = () => {
         },
       });
       socket.on("joined", (data) => {
-        console.log("IO JOINED EVENT", data);
         //load all previous messages
         const prevMessages = data.messages as ServerMessage[];
         const formattedMessages: MessageModel[] = [];
@@ -53,10 +53,13 @@ const Chatroom: NextPage = () => {
         setMessages(formattedMessages);
       });
       socket.on("message", (message: ServerMessage) => {
-        console.log(message);
         setMessages((prev) => [
           ...prev,
-          { id: message.id, content: message.content, sender: message.user.username },
+          {
+            id: message.id,
+            content: message.content,
+            sender: message.user.username,
+          },
         ]);
       });
       setSocketIO(socket);
