@@ -1,6 +1,6 @@
 import { useState, useRef, RefObject } from "react";
 
-type UseInput = (validator: (input: string) => string | boolean) => {
+type UseInput = (validator: (input: any) => string | boolean) => {
   ref: RefObject<HTMLInputElement>;
   isValid: boolean;
   validateAndReturnString: () => string | boolean;

@@ -5,23 +5,30 @@ import React, { useEffect, useRef } from "react";
 import styles from "./ChatBox.module.css";
 import MessageItem from "./MessageItem";
 
-const ChatBox: React.FC<{ messages: MessageModel[] }> = ({ messages }) => {
+const ChatBox: React.FC<{ messages: MessageModel[]; loading: boolean }> = ({
+  messages,
+  loading,
+}) => {
   const bottomOfBoxRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (bottomOfBoxRef.current) {
+    if (bottomOfBoxRef.current && !loading) {
       bottomOfBoxRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [messages]);
+  }, [messages, loading]);
 
   return (
     <Card>
-      <ul className={styles.chatbox}>
-        {messages.map((message) => (
-          <MessageItem key={message.id} message={message} />
-        ))}
-        <div ref={bottomOfBoxRef}></div>
-      </ul>
+      {loading ? (
+        <p style={{ textAlign: "center" }}>Loading...</p>
+      ) : (
+        <ul className={styles.chatbox}>
+          {messages.map((message) => (
+            <MessageItem key={message.id} message={message} />
+          ))}
+          <div ref={bottomOfBoxRef}></div>
+        </ul>
+      )}
     </Card>
   );
 };

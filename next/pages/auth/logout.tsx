@@ -11,7 +11,7 @@ const Logout: NextPage = () => {
   useEffect(() => {
     logoutFetch(context.token as string);
     context.logoutHandler();
-  }, []);
+  }, [context.logoutHandler, context.token]);
   return (
     <Card>
       <h1>Logged out!</h1>

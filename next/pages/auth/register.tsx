@@ -6,13 +6,14 @@ import Card from "../../components/UI/Card";
 import Input from "../../components/UI/Input";
 import AuthContext from "../../context/AuthContext";
 import authFetch from "../../helpers/auth-fetch";
+import { usernameValidator } from "../../helpers/validators";
 import useInput from "../../hooks/use-input";
 
 const Register: NextPage = () => {
   const { loginHandler } = useContext(AuthContext);
   const router = useRouter();
 
-  const usernameRef = useInput((value) => value);
+  const usernameRef = useInput(usernameValidator);
   const passwordRef = useInput((value) => value);
   const passConfRef = useInput((value) => value);
 
