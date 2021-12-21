@@ -21,7 +21,7 @@ export default class User extends BaseModel {
   public lastName: string | null;
 
   @hasMany(() => UsersChatroom)
-  public userChatroom: HasMany<typeof UsersChatroom>;
+  public usersChatroom: HasMany<typeof UsersChatroom>;
 
   @hasMany(() => Message)
   public messages: HasMany<typeof Message>;

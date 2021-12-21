@@ -18,12 +18,12 @@ export default class AuthController {
         .attempt(user.username, password);
 
       if (authResults) {
-        await user.load("userChatroom");
+        await user.load("usersChatroom");
 
         return ctx.response.status(200).json({
           userId: user.id,
           username: user.username,
-          chatrooms: user.userChatroom,
+          chatrooms: user.usersChatroom,
           token: authResults.token,
         });
       }

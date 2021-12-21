@@ -1,5 +1,7 @@
 .chatbox {
     list-style-type: none;
+    max-height: 40vh;
+    overflow-y: scroll;
     padding: 0;
 }
 

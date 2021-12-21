@@ -27,7 +27,13 @@ Ws.io.on("connection", async (socket: Socket) => {
       user.joinChatroom(chatroomId);
       const chatroom = await Chatroom.find(chatroomId);
       if (chatroom) {
-        await chatroom.load("messages");
+        //load messages with user info
+        const messagesQuery = await Message.query()
+          .where("chatroom_id", chatroom.id)
+          .preload("user");
+        //remove passwords from messages
+        messagesQuery.forEach((message) => (message.user.password = "secret"));
+        //join chatroom with unique room id
         socket.join(chatroomIdString);
         //send to all users in same chatroom including user
         Ws.io.in(chatroomIdString).emit("joined", {
@@ -35,7 +41,7 @@ Ws.io.on("connection", async (socket: Socket) => {
           userId,
           token,
           chatroomId,
-          messages: chatroom.messages,
+          messages: messagesQuery,
         });
       }
     }
@@ -49,6 +55,8 @@ Ws.io.on("connection", async (socket: Socket) => {
         newMessage.userId = userId;
         newMessage.chatroomId = chatroomId;
         const savedMessage = await newMessage.save();
+        await savedMessage.load("user");
+        savedMessage.user.password = "secret";
         //send message to room
         Ws.io.in(chatroomIdString as string).emit("message", savedMessage);
       }

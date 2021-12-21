@@ -1,7 +1,6 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, HasMany, hasMany, HasManyThrough, hasManyThrough } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import Message from './Message'
-import User from './User'
 import UsersChatroom from './UsersChatroom'
 
 export default class Chatroom extends BaseModel {
@@ -12,13 +11,10 @@ export default class Chatroom extends BaseModel {
   public roomName: string
 
   @hasMany(() => UsersChatroom)
-  public userChatroom: HasMany<typeof UsersChatroom>
+  public usersChatroom: HasMany<typeof UsersChatroom>
 
   @hasMany(() => Message)
   public messages: HasMany<typeof Message>
-
-  @hasManyThrough([() => User, () => UsersChatroom])
-  public users: HasManyThrough<typeof User>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

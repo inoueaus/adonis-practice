@@ -45,7 +45,7 @@ const Chatroom: NextPage = () => {
         const formattedMessages: MessageModel[] = [];
         prevMessages.forEach((message) => {
           formattedMessages.push({
-            sender: message.user_id,
+            sender: message.user.username,
             content: message.content,
             id: message.id,
           });
@@ -53,9 +53,10 @@ const Chatroom: NextPage = () => {
         setMessages(formattedMessages);
       });
       socket.on("message", (message: ServerMessage) => {
+        console.log(message);
         setMessages((prev) => [
           ...prev,
-          { id: message.id, content: message.content, sender: message.user_id },
+          { id: message.id, content: message.content, sender: message.user.username },
         ]);
       });
       setSocketIO(socket);
@@ -78,20 +79,19 @@ const Chatroom: NextPage = () => {
   return (
     <>
       <Card>Chatroom ID: {chatroomId}</Card>
+      <ChatBox messages={messages} />
       <Card>
-        <h5>New Message</h5>
         <form onSubmit={sendMessage}>
           <Input
             name="message"
             type="text"
             ref={messageRef.ref}
-            label="Message"
+            label="New Message"
             isValid={messageRef.isValid}
           />
           <Button type="submit">Send</Button>
         </form>
       </Card>
-      <ChatBox messages={messages} />
     </>
   );
 };
