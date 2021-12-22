@@ -9,9 +9,12 @@ const Logout: NextPage = () => {
 
   //logout on page load
   useEffect(() => {
-    logoutFetch(context.token as string);
-    context.logoutHandler();
-  }, [context.logoutHandler, context.token]);
+    if (context.isAuth) {
+      logoutFetch(context.token as string);
+      context.logoutHandler();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <Card>
       <h1>Logged out!</h1>

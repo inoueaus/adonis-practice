@@ -4,7 +4,7 @@ type AuthFetch = (
   authType: "login" | "register",
   username: string,
   password: string
-) => Promise<{ token: string; username: string; userId: number } | void>;
+) => Promise<{ token: string; username: string; userId: number } | false>;
 
 const authFetch: AuthFetch = async (authType, username, password) => {
   try {
@@ -33,6 +33,7 @@ const authFetch: AuthFetch = async (authType, username, password) => {
   } catch (error) {
     console.log(error);
   }
+  return false;
 };
 
 export default authFetch;

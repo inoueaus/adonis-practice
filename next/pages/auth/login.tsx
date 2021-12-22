@@ -7,6 +7,7 @@ import AuthContext from "../../context/AuthContext";
 import useInput from "../../hooks/use-input";
 import authFetch from "../../helpers/auth-fetch";
 import { useRouter } from "next/router";
+import { usernameValidator } from "../../helpers/validators";
 
 const Login: NextPage = () => {
   const context = useContext(AuthContext);
@@ -14,7 +15,7 @@ const Login: NextPage = () => {
 
   const [authError, setAuthError] = useState<string | null>(null);
 
-  const usernameRef = useInput((value) => value);
+  const usernameRef = useInput(usernameValidator);
   const passwordRef = useInput((value) => value);
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -29,18 +30,24 @@ const Login: NextPage = () => {
         const authResults = await authFetch("login", username, password);
         if (authResults) {
           //must add loading chatrooms
-          context.loginHandler(authResults.token, authResults.username, authResults.userId, []);
+          context.loginHandler(
+            authResults.token,
+            authResults.username,
+            authResults.userId,
+            []
+          );
           router.replace("/");
+        } else {
+          setAuthError("Invalid password or username.");
         }
       })();
-    } else {
-      setAuthError("Something went wrong!");
     }
   };
   return (
     <>
       <Card>
         <h1>Login</h1>
+        {authError && <p style={{ color: "red" }}>{authError}</p>}
       </Card>
       <Card>
         <form onSubmit={handleSubmit}>
