@@ -3,12 +3,13 @@ import Message from "App/Models/Message";
 import User from "App/Models/User";
 import Ws from "App/Services/Ws";
 import { Socket } from "socket.io";
+import Logger from '@ioc:Adonis/Core/Logger'
 
 //start socketio
 Ws.boot();
 
 Ws.io.on("connection", async (socket: Socket) => {
-  console.log("WebSocket Connected!");
+  Logger.info(`Connected request info: ${socket.request}` );
   //userId will be sent in headers with tag userid
   const userIdString = socket.request.headers.userid;
   //must convert userId to number for use with database
@@ -67,7 +68,7 @@ Ws.io.on("connection", async (socket: Socket) => {
     });
 
     socket.on("disconnect", (reason) => {
-      console.log("CLIENT DISCONNECTED: ", reason);
+      Logger.info(`CLIENT DISCONNECTED: ${reason}`);
     });
   } else {
     console.log("chatroomId not received");

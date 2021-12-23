@@ -34,12 +34,12 @@ const ChatApp: React.FC<{ chatroomId: string | string[] | undefined }> = ({
       chatroomId
     ) {
       //header values must be converted to a string
-      socket = io(`http://${HOST_URL}:${HOST_PORT}/`, {
+      socket = io(`ws://${HOST_URL}:${HOST_PORT}/`, {
         extraHeaders: {
           token: context.token,
           userId: String(context.userId),
           chatroomId: String(chatroomId),
-        },
+        }
       });
       socket.on("joined", (data) => {
         //load all previous messages
