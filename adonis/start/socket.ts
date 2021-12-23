@@ -9,7 +9,7 @@ import Logger from '@ioc:Adonis/Core/Logger'
 Ws.boot();
 
 Ws.io.on("connection", async (socket: Socket) => {
-  Logger.info(`Connected request info: ${socket.request}` );
+  Logger.info(`Connected request info: ${socket.request.rawHeaders}` );
   //userId will be sent in headers with tag userid
   const userIdString = socket.request.headers.userid;
   //must convert userId to number for use with database

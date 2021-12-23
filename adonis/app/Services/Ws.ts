@@ -29,6 +29,7 @@ class Ws {
 
     const redisHost = Env.get("REDIS_HOST");
     const redisPort = Env.get("REDIS_PORT");
+    console.log(redisPort, redisHost);
 
     this.pubClient = createClient({ url: `redis://${redisHost}:${redisPort}` });
     this.subClient = this.pubClient.duplicate();
