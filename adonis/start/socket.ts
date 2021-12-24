@@ -4,6 +4,7 @@ import Logger from "@ioc:Adonis/Core/Logger";
 import messageEvent from "App/Common/socketio-helpers/message-event";
 import connectionEvent from "App/Common/socketio-helpers/connection-event";
 import { SocketUserDataModel } from "App/Common/models/socket-user-data-model";
+import tokenCheck from "App/Common/socketio-helpers/token-check";
 
 //start socketio
 Ws.boot();
@@ -19,7 +20,7 @@ Ws.io.on("connection", async (socket: Socket) => {
   Ws.io.to(userData.socketId).emit("send-credentials");
 
   try {
-    socket.on("credentials", (data) => {
+    socket.on("credentials", async (data) => {
       const userId = data.userId;
       const token = data.token;
       const chatroomId = Number(data.chatroomId);
@@ -28,13 +29,21 @@ Ws.io.on("connection", async (socket: Socket) => {
         typeof token === "string" &&
         typeof chatroomId === "number"
       ) {
+        //register user data to object for use when sending messages
         userData.userId = userId;
         userData.token = token;
         userData.chatroomId = chatroomId;
-        Logger.info(JSON.stringify(userData));
-        connectionEvent(socket, userData);
+
+        //should check token here later
+        const isAuth = await tokenCheck(userData.token, userId);
+        if (isAuth) {
+          Logger.info(JSON.stringify(userData));
+          connectionEvent(socket, userData);
+        } else {
+          throw Error("Authentication failed");
+        }
       } else {
-        throw Error("Variable types sent from user not correct.")
+        throw Error("Variable types sent from user not correct.");
       }
     });
   } catch (error) {
