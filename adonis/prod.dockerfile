@@ -36,5 +36,6 @@ ENV PG_PASSWORD=secret
 ENV PG_DB_NAME=lucid
 ENV REDIS_HOST=redis
 ENV REDIS_PORT=6379
+ENV FRONT_DOMAIN=http://localhost:3001
 
 CMD ["npm", "run", "start"]

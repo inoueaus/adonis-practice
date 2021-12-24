@@ -1,7 +1,8 @@
 {
   "extends": "./node_modules/adonis-preset-ts/tsconfig",
   "include": [
-    "**/*"
+    "**/*",
+    "socketio-helpers"
   ],
   "exclude": [
     "node_modules",
@@ -23,6 +24,9 @@
       ],
       "Database/*": [
         "./database/*"
+      ],
+      "socketio-helpers": [
+        "./socketio-helpers/*"
       ]
     },
     "types": [

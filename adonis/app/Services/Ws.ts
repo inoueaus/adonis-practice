@@ -17,19 +17,21 @@ class Ws {
       return;
     }
 
+    const FRONT_DOMAIN = Env.get("FRONT_DOMAIN");
     this.booted = true;
     this.io = new Server(AdonisServer.instance!, {
       cors: {
-        origin: "*",
+        origin: FRONT_DOMAIN,
         methods: ["GET", "POST"],
         allowedHeaders: ["token", "userId", "chatroomId"],
         credentials: true,
       },
+      transports: ["websocket"],
+      path: "/socket.io"
     });
 
     const redisHost = Env.get("REDIS_HOST");
     const redisPort = Env.get("REDIS_PORT");
-    console.log(redisPort, redisHost);
 
     this.pubClient = createClient({ url: `redis://${redisHost}:${redisPort}` });
     this.subClient = this.pubClient.duplicate();
@@ -42,7 +44,7 @@ class Ws {
         this.io.adapter(createAdapter(this.pubClient, this.subClient));
         (async () => {
           await this.subClient.subscribe("channel", (message) => {
-            Logger.info(`Redis test: ${message}`);
+            Logger.info(`Redis test ver 1.0.1: ${message}`);
           });
           await this.pubClient.publish("channel", "Hello");
           await this.pubClient.publish("channel", "World!");

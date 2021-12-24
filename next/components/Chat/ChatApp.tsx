@@ -35,11 +35,8 @@ const ChatApp: React.FC<{ chatroomId: string | string[] | undefined }> = ({
     ) {
       //header values must be converted to a string
       socket = io(`ws://${HOST_URL}:${HOST_PORT}/`, {
-        extraHeaders: {
-          token: context.token,
-          userId: String(context.userId),
-          chatroomId: String(chatroomId),
-        }
+        withCredentials: true,
+        transports: ["websocket"],
       });
       socket.on("joined", (data) => {
         //load all previous messages
@@ -55,6 +52,13 @@ const ChatApp: React.FC<{ chatroomId: string | string[] | undefined }> = ({
         });
         setMessages(formattedMessages);
         setLoading(false);
+      });
+      socket.on("send-credentials", (data) => {
+        socket.emit("credentials", {
+          userId: context.userId,
+          token: context.token,
+          chatroomId,
+        });
       });
       socket.on("message", (message: ServerMessage) => {
         setMessages((prev) => [

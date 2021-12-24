@@ -22,8 +22,12 @@ import Route from "@ioc:Adonis/Core/Route";
 import Chatroom from "App/Models/Chatroom";
 import User from "App/Models/User";
 import UsersChatroom from "App/Models/UsersChatroom";
+import Logger from "@ioc:Adonis/Core/Logger";
 
-Route.get("/", async () => {
+Route.get("/", async (ctx: HttpContextContract) => {
+  const cookies = ctx.request.cookiesList();
+  console.log(cookies);
+  Logger.info((await JSON.stringify(cookies)));
   return { hello: "world" };
 });
 
