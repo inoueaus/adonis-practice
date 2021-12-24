@@ -8,6 +8,8 @@ const tokenCheck: (token: string, userId: number) => Promise<boolean> = async (t
 
   const latestToken = tokenQueryResult.rows[0].token
 
+  console.log(latestToken, token);
+
   /* check if user is logged in (ie token exists)
   and that token provided by user matches the latest token
   */

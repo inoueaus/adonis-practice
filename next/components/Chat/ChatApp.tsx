@@ -34,7 +34,7 @@ const ChatApp: React.FC<{ chatroomId: string | string[] | undefined }> = ({
       chatroomId
     ) {
       //header values must be converted to a string
-      socket = io(`ws://${HOST_URL}:${HOST_PORT}/`, {
+      socket = io(`http://${HOST_URL}:${HOST_PORT}/`, {
         withCredentials: true,
         transports: ["websocket"],
       });
