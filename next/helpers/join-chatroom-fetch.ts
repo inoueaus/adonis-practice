@@ -1,4 +1,4 @@
-import { HOST_PORT, HOST_URL } from "../react-env";
+import { HOST_URL } from "../react-env";
 
 const joinChatroomFetch = async (
   token: string,
@@ -6,7 +6,7 @@ const joinChatroomFetch = async (
   userId: number
 ) => {
   try {
-    const results = await fetch(`http://${HOST_URL}:${HOST_PORT}/join-chatroom`, {
+    const results = await fetch(`${HOST_URL}/join-chatroom`, {
       method: "POST",
       credentials: "include",
       headers: {

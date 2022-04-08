@@ -1,4 +1,4 @@
-import { HOST_PORT, HOST_URL } from "../react-env";
+import { HOST_URL } from "../react-env";
 
 type AuthFetch = (
   authType: "login" | "register",
@@ -9,13 +9,13 @@ type AuthFetch = (
 const authFetch: AuthFetch = async (authType, username, password) => {
   try {
     const result = await fetch(
-      `http://${HOST_URL}:${HOST_PORT}/auth/${authType}`,
+      `${HOST_URL}/auth/${authType}`,
       {
         method: "POST",
         body: JSON.stringify({ username, password }),
         headers: { "Content-Type": "application/json" },
-      }
-    );
+      credentials: "include",
+    });
     const data = await result.json();
 
     //extract response

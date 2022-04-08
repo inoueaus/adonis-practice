@@ -1,8 +1,8 @@
-import { HOST_PORT, HOST_URL } from "../react-env";
+import { HOST_URL } from "../react-env";
 
 const logoutFetch = async (token: string) => {
   try {
-    const results = await fetch(`http://${HOST_URL}:${HOST_PORT}/auth/logout`, {
+    const results = await fetch(`${HOST_URL}/auth/logout`, {
       method: "POST",
       credentials: "include",
       headers: {

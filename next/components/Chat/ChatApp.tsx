@@ -6,7 +6,7 @@ import MessageModel from "../../models/message-model";
 import ServerMessage from "../../models/server-message";
 
 import AuthContext from "../../context/AuthContext";
-import { HOST_PORT, HOST_URL } from "../../react-env";
+import { HOST_URL } from "../../react-env";
 
 import Card from "../UI/Card";
 import Input from "../UI/Input";
@@ -34,7 +34,7 @@ const ChatApp: React.FC<{ chatroomId: string | string[] | undefined }> = ({
       chatroomId
     ) {
       //header values must be converted to a string
-      socket = io(`http://${HOST_URL}:${HOST_PORT}/`, {
+      socket = io(HOST_URL, {
         withCredentials: true,
         transports: ["websocket"],
       });

@@ -26,8 +26,7 @@ class Ws {
         allowedHeaders: ["token", "userId", "chatroomId"],
         credentials: true,
       },
-      transports: ["websocket"],
-      path: "/socket.io"
+      path: "/socket.io",
     });
 
     const redisHost = Env.get("REDIS_HOST");
