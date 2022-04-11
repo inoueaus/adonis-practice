@@ -41,13 +41,11 @@ class Ws {
     Promise.all([this.pubClient.connect(), this.subClient.connect()]).then(
       () => {
         this.io.adapter(createAdapter(this.pubClient, this.subClient));
-        (async () => {
-          await this.subClient.subscribe("channel", (message) => {
-            Logger.info(`Redis test ver 1.0.1: ${message}`);
-          });
-          await this.pubClient.publish("channel", "Hello");
-          await this.pubClient.publish("channel", "World!");
-        })();
+        this.subClient.subscribe("channel", (message) => {
+          Logger.info(`Redis test ver 1.0.1: ${message}`);
+        });
+        this.pubClient.publish("channel", "Hello"); // Test that redis is connected and functioning
+        this.pubClient.publish("channel", "World!");
       }
     );
   }
